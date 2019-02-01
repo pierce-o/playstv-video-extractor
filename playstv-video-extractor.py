@@ -66,8 +66,12 @@ elif ( is_single_video.lower() == 'p'):
     # Get the userid of the profile, get the json object of the public videos and then finally phrase then.
     videos = playstv.phrase_video_json( playstv.get_public_videos( playstv.get_user_id( profile_name ) ) )
 
+    video_size = len( videos )
+
+    print ("Starting the download of " + str(video_size) + " videos.")
+
     # Loop through the videos array
-    for video in videos:
+    for index, video in enumerate(videos):
 
         # Build the url 
         built_url = "https://" + video.server + "/video/" + video.videoid + "/processed/720.mp4"
@@ -89,7 +93,7 @@ elif ( is_single_video.lower() == 'p'):
             file = open( new_file, "wb")
 
             # Notify the user that we are downloading a video, using the title to identify it
-            print( "Downloading video " + video.description + "..." )
+            print( "[" + str(index) + "/" + str(video_size) + "] Downloading video " + video.description + "..." )
 
             # Write the videos bytes to the file
             file.write( r.content )
@@ -97,8 +101,8 @@ elif ( is_single_video.lower() == 'p'):
             # Close the file
             file.close()
 
-        # Once the loop has ended then notify the user that all of the videos have downloaded
-        print ( "All files have successfully downloaded!")
+    # Once the loop has ended then notify the user that all of the videos have downloaded
+    print ( "All files have successfully downloaded!")
 
 else: # Unknown command, exit
     exit()
